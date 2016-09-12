@@ -31,8 +31,11 @@ platform :ios do
   desc "This will also make sure the profile is up to date"
   lane :beta do
     # match(type: "appstore") # more information: https://codesigning.guide
-    gym # Build your app - more options available
-    pilot
+    gym(scheme: "WoJK",
+        provisioning_profile_path: "/Users/horse/Library/MobileDevice/Provisioning Profiles/57a7a0b4-a1e0-4b7e-abce-e74373c94f18.mobileprovision",
+        codesigning_identity: "iPhone Distribution: Shandong Fosung Science Co., Ltd.",
+        use_legacy_build_api: true) # Build your app - more options available
+    #pilot
 
     # sh "your_script.sh"
     # You can also use other beta testing services here (run `fastlane actions`)
