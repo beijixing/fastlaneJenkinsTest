@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="MemberCenterCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jPM-zm-f1B">
+                        <rect key="frame" x="46" y="42" width="274" height="1"/>
+                        <color key="backgroundColor" red="0.9137254901960784" green="0.9137254901960784" blue="0.9137254901960784" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="WBW-ma-mK0"/>
+                        </constraints>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="report_right.png" translatesAutoresizingMaskIntoConstraints="NO" id="hlH-D7-fiS">
+                        <rect key="frame" x="282" y="7" width="30" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="30" id="Huf-tu-RXq"/>
+                            <constraint firstAttribute="height" constant="30" id="Ohh-ea-hMf"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kq9-K3-95x">
+                        <rect key="frame" x="46" y="6" width="218" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="32" id="YyU-ox-WzY"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <color key="textColor" red="0.48627450980392156" green="0.48627450980392156" blue="0.48627450980392156" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zlq-nl-xeL">
+                        <rect key="frame" x="8" y="7" width="30" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="zlq-nl-xeL" secondAttribute="height" multiplier="1:1" id="yrj-Fx-jSb"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Kq9-K3-95x" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="4SP-5B-nmi"/>
+                    <constraint firstAttribute="trailing" secondItem="hlH-D7-fiS" secondAttribute="trailing" constant="8" id="6Wk-dN-ECV"/>
+                    <constraint firstItem="Kq9-K3-95x" firstAttribute="leading" secondItem="zlq-nl-xeL" secondAttribute="trailing" constant="8" id="9gn-00-Agi"/>
+                    <constraint firstAttribute="bottom" secondItem="jPM-zm-f1B" secondAttribute="bottom" id="9vv-Q5-dxR"/>
+                    <constraint firstAttribute="trailing" secondItem="jPM-zm-f1B" secondAttribute="trailing" id="CDg-f0-AdU"/>
+                    <constraint firstItem="zlq-nl-xeL" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="Q7W-JQ-KFI"/>
+                    <constraint firstItem="hlH-D7-fiS" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="cm6-4I-AVy"/>
+                    <constraint firstItem="zlq-nl-xeL" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="7" id="mhx-cx-Vg1"/>
+                    <constraint firstItem="jPM-zm-f1B" firstAttribute="leading" secondItem="zlq-nl-xeL" secondAttribute="trailing" constant="8" id="oQw-0J-HEk"/>
+                    <constraint firstItem="hlH-D7-fiS" firstAttribute="leading" secondItem="Kq9-K3-95x" secondAttribute="trailing" constant="18" id="urf-1N-TaV"/>
+                    <constraint firstAttribute="bottom" secondItem="zlq-nl-xeL" secondAttribute="bottom" constant="6" id="uua-yJ-ZTL"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="iconImageView" destination="zlq-nl-xeL" id="XHt-1K-VbR"/>
+                <outlet property="titleLabel" destination="Kq9-K3-95x" id="UmQ-Qc-QpQ"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="report_right.png" width="49" height="49"/>
+    </resources>
+</document>

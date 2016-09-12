@@ -1,0 +1,903 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8" />
+	<title>监控日报H5报表页面</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection"content="telephone=no, email=no" />
+	<meta name="HandheldFriendly" content="true">
+	<meta name="MobileOptimized" content="320">
+	<meta name="msapplication-tap-highlight" content="no">
+	<meta name="apple-mobile-web-app-title" content="移动计费">
+	<link rel="stylesheet" type="text/css" href="css/style.css"/>
+	<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="js/swiper-3.3.1.min.js"></script>
+	<script type="text/javascript" src="js/doT.min.js"></script>
+	<script type="text/javascript" src="js/highcharts.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<!-- 定义页面中所使用的参数级全局变量 -->
+	<script type="text/javascript">
+		var userId = 'xuchuan2'; //用户名
+		var equipType = 1;//设备类型：1-iphone;2-ipad;3-android;
+		var tokenId = 'test';//设备Token号
+		var modelId = 'ff808081543ca91301544b3a37a0001d'; //模块ID
+		//var modelId = '402882a854adb2c20154adc05575000c'; //模块ID
+		//var hostUrl = 'http://127.0.0.1:8080/WO_UnicomPro/service/';// 服务请求地址
+		var hostUrl = 'http://124.133.15.93:8080/WO_UnicomPro/service/';// 服务请求地址
+		//var hostUrl = 'http://202.99.45.60:8899/wojk/service/';// 服务请求地址
+	</script>
+
+</head>
+<body class='fulls bg-gray lands'>
+	<div class='topwrap'>
+  		<div class='header box'>
+  			<a class='iconfont iconw32' id='backicon'>&#xe601;</a> <!-- 返回按钮   注意id  不要漏掉-->
+    		<div class='selectbox new-selectbox'>
+    			<select id='targetName'></select>
+    		</div>
+  			<a class='iconfont iconw32' id='headersearch'>&#xe603;</a>
+  		</div>
+  		<div class='floatsec searchbox box'>
+      		<a class='iconfont iconw32' id='scancelbtn'>&#xe601;</a>
+      		<div class='scaidan clear'>
+        		<div class='scaidansw1'>
+          			<select id='se_date'></select>
+        		</div>
+        		<div class='scaidansw2'>
+        			<select id='se_pro'></select>
+        		</div>
+        		<div class='scaidansw3'>
+          			<select id='se_city'></select>
+        		</div>
+      		</div>
+  		</div>
+		<div class='tab-title box' id='QorH'>
+	  		<a _index='0' class='on'>区域发展</a>
+	  		<a _index='1' class=''  >历史趋势</a>
+	  	</div>
+  		<div class="swiper-container dateswiper" id='dateswiper' border='1px solid red'>
+      		<div class="swiper-wrapper"></div> 
+      		<div class="swiper-button-prev iconfont">&#xe601;</div>
+      		<div class="swiper-button-next iconfont">&#xe604;</div>
+  		</div>
+    	<!--新加-->
+    	<div class="new-history" id="lsqs_areaName">山东-济南</div>
+	</div>
+
+	<div class='datachartswrap1 pt140' >
+		<div class='datachartswrap'>
+	    	<div class='datacharts' style="width:100%;height:100%;overflow:visible;" id='chartQyfz'></div>
+	    	<div class='datacharts' style="width:100%;height:100%;overflow:visible;" id='chartLsqs'></div>
+	  	</div>
+	</div>
+
+	<div class='datatabwrap'>
+  		<div class='tabsh box'>
+    		<ul class='tableft' id='tableft'></ul>
+    		<div class='valuewrap' id='valuetab'>
+      			<table class='valuedata1' cellpadding="0" cellspacing="0">
+       				<thead id='tabtop'></thead>
+        			<tbody id='tabdatas'></tbody>
+      			</table>
+    		</div>
+  		</div>
+	</div>
+<script type="text/template" id='t_tableft'>
+  {{ for (var i = 0; i < it.length; i++) { }}
+          <li class="new-city-con">
+               <span>{{=it[i]}}</span>
+               <p>{{=it[i]}}</p>
+          </li>
+  {{ } }}
+</script>
+<script type="text/template" id='t_tab_qyfz2'>
+  {{ for (var i = 0; i < it[0].length; i++) { }}
+               {{=it[0][i]}}
+          <tr>
+            <td>{{=it[0][i]}}</td>
+			<td class='ratio{{? it[1][i]<0}}-red{{?}}'>{{=it[1][i]}}{{? it[1][i]!='--'}}{{=it[2]}}{{?}}</td>
+          </tr>
+  {{ } }}
+</script>
+<script type="text/template" id='t_tab_qyfz3'>
+  {{ for (var i = 0; i < it[0].length; i++) { }}
+               {{=it[0][i]}}
+          <tr>
+            <td>{{=it[0][i]}}</td>
+            <td>{{=it[1][i]}}</td>
+			<td class='ratio{{? it[2][i]<0}}-red{{?}}'>{{=it[2][i]}}{{? it[2][i]!='--'}}{{=it[3]}}{{?}}</td>
+          </tr>
+  {{ } }}
+</script>
+<script type="text/template" id='t_tab_lsqs2'>
+  {{ for (var i = 0; i < it[0].length; i++) { }}
+               {{=it[0][i]}}
+          <tr>
+             <td>{{=it[0][i]}}</td>
+			 <td class='ratio{{? it[1][i]<0}}-red{{?}}'>{{=it[1][i]}}{{? it[1][i]!='--'}}{{=it[2]}}{{?}}</td>
+          </tr>
+  {{ } }}
+</script>
+<script type="text/template" id='t_tab_lsqs3'>
+  {{ for (var i = 0; i < it[0].length; i++) { }}
+               {{=it[0][i]}}
+          <tr>
+             <td>{{=it[0][i]}}</td>
+			 <td>{{=it[1][i]}}</td>
+			 <td class='ratio{{? it[2][i]<0}}-red{{?}}'>{{=it[2][i]}}{{? it[1][i]!='--'}}{{=it[3]}}{{?}}</td>
+          </tr>
+  {{ } }}
+</script>
+<script type="text/template" id='t_select'>
+  {{ for (var i = 0; i < it.length; i++) { }}
+          <option value='{{=it[i].key}}'>
+            {{=it[i].value}}
+          </option>
+  {{ } }}
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+	//*****************************初始化Android、IOS端的参数**********************************/
+	if(common.osName()=="iphone"){
+		//调用定义桥接的方法，获取传入的参数
+ 		setupWebViewJavascriptBridge(function(bridge) {
+	    	bridge.registerHandler('setJSParams', function(data, responseCallback) {
+	            initParamValue(data.userId, data.modelId, data.tokenId, data.equipType, data.hostUrl);
+	            var responseData = { 'Javascript Says':'Right back atcha!','data' : data};
+	            responseCallback(responseData);
+	    	});
+	    });
+	    //重新设置全局变量参数
+	    function initParamValue(_userId, _modelId, _tokenId, _equipType, _hostUrl){
+        	userId = _userId;
+            modelId = _modelId;
+            tokenId = _tokenId;
+            equipType = _equipType;
+            hostUrl = _hostUrl;
+            initData();
+ 		}
+ 		//设置返回按钮事件
+ 		$('#backicon').click(function() {
+			setupWebViewJavascriptBridge(function(bridge) {
+		        bridge.callHandler('backAction', function responseCallback(responseData) {});
+		    });  
+		});
+	}else if(common.osName()=="android"){
+		//重新设置全局变量参数
+		var searchurl = window.location.search;
+		var request = getUrlA(searchurl);
+		userId = request['userId'];
+		modelId = request['modelId'];
+		tokenId = request['tokenId'];
+		equipType = request['equipType'];
+		hostUrl = request['hostUrl'];
+		//调用获取数据方法
+		initData();
+		//设置返回按钮事件
+ 		$('#backicon').click(function() {
+			nativeMethod.toActivity('a');
+		});
+	}else{
+		//调用获取数据方法
+		initData();
+	}
+	//*************************************************************************************/
+		
+  	var o_jkbbTList = null;//定义全局变量：记录当前报表指标数据列表
+  	var isLoadData = false;//定义全局变量：标记当前报表的数据是否加载
+  	var qyfzOrLsqsTabIndex = 0;//定义全局变量：记录"区域发展"、"历史趋势"Tab页索引
+  	var maxPodeNum = 11,podeWidth = 18; //定义全局变量：记录全屏最大显示柱体数量、单个柱子宽度
+  	Highcharts.setOptions({lang:{thousandsSep:','}});//设置全局变量：HighCharts所有数值千分位显示
+
+  	//注册"账期"下拉列表改变事件
+  	$('#se_date').change(function() {
+    	var acctDate = $(this).val();
+    	getReportdata(acctDate,$('#se_pro').val(),$('#se_city').val());
+  	});
+  	
+	//注册"省份"下拉列表改变事件
+	$('#se_pro').change(function() {
+	    var pro_city = $(this).val();
+	    getCitydata(pro_city);
+	});
+	
+  	//注册"地市"下拉列表改变事件
+  	$('#se_city').change(function() {
+    	var city = $(this).val();
+    	getReportdata($('#se_date').val(),$('#se_pro').val(),city);
+  	});
+  	
+  	//填充下拉列表元素方法
+	function fillSelectOption(obj,data){
+    	var t_t_select = $('#t_select').html();
+    	obj.html(doT.template( t_t_select )( data ));
+  	}
+	//注册"指标"下拉列表改变事件
+  	$('#targetName').change(function(){
+		$(this).blur();
+	    if(qyfzOrLsqsTabIndex == 0){
+	    	init_fzqs();
+	    }
+	    if(qyfzOrLsqsTabIndex == 1){
+	    	init_lsqs();
+	    }
+  	});
+  	
+  	//注册搜索按钮事件
+  	$('#headersearch').click(function(){
+    	$('.searchbox').css('top','0');
+  	});
+  	$('#scancelbtn').click(function(){
+    	$('.searchbox').css('top','-100px');
+  	});
+
+	//注册"历史趋势"、"区域发展"Tab切换点击事件
+  	$('#QorH>a').click(function() {
+    	$('#QorH>a').removeClass('on');
+    	$(this).addClass('on');
+    	qyfzOrLsqsTabIndex = $(this).attr('_index');
+    	if(qyfzOrLsqsTabIndex == 0){
+	    	$('#dateswiper').show();
+		  	$('#lsqs_areaName').hide();
+	   		setTimeout(function(){init_fzqs();},50);
+     	}
+     	if(qyfzOrLsqsTabIndex == 1){
+      		$('#dateswiper').hide();
+	  	  	$('#lsqs_areaName').show();
+		  	setTimeout(function(){init_lsqs();},50);
+    	}
+	});
+	
+	//初始化"区域发展"中的日期条
+	var dateSwiper = new Swiper ('#dateswiper', {
+    	loop: false,
+    	initialSlide :2,
+    	nextButton: '.swiper-button-next',
+    	prevButton: '.swiper-button-prev',
+    	onSlideChangeEnd: function(swiper){  //当前指标下的区域发展的某一天
+      		var dayIndex = swiper.activeIndex;
+      		if(!isLoadData){return;}
+      		dayIndex = swiper.slides.length - dayIndex -1;
+	        var targetIndex = $('#targetName').val();
+	        var o_data = o_jkbbTList[targetIndex].jkbbTDList[0].jkbbTDDList[dayIndex];
+	        var legendNames = o_jkbbTList[targetIndex].jkbbTDList[0].legendNames;
+	        var tabColNames = o_jkbbTList[targetIndex].jkbbTDList[0].tabColNames;
+	        var legendUnits = o_jkbbTList[targetIndex].jkbbTDList[0].legendUnits;
+	        fill_tab_qyfz(o_data,tabColNames,legendUnits);
+	        fill_chart_qyfz(o_data,legendNames,legendUnits);
+    	}
+  	});
+
+	//初始化"账期"、"省份"下拉列表数据
+	function initData(){
+    	initLoadingImage();
+    	var xmlhttp = getajaxHttp();
+    	var selurl = hostUrl+ 'appService2/getMonitorReportSelectData/' + userId + '/' + equipType + '/1/' + tokenId;
+    	//console.log(selurl);
+    	xmlhttp.open("GET",selurl,true);
+    	xmlhttp.send();
+    	xmlhttp.onreadystatechange=function(){
+    		if(xmlhttp.readyState == 4){
+    			if(xmlhttp.status==200){
+    				if(!xmlhttp.responseText||xmlhttp.responseText==null){
+                 		removeLoadingImage();
+                 		alert('获取数据为空！');return;
+                	}
+                	var forms = JSON.parse(xmlhttp.responseText);
+                	if(forms.selectItemData.retCode != 'success'){
+                		removeLoadingImage();
+                		if(forms.selectItemData.retCode=="invalid"){
+                			alert(forms.selectItemData.message);
+                			loginOutWithInvalid();
+                			return;
+                		}else{
+                			alert('获取数据为空！');return;
+                		}
+                	}
+                    isLoadData = true;
+                    
+                    //获取"账期"、"省份"下拉列表数据
+                    var selectItemData = forms.selectItemData;
+                    var acctList = selectItemData.dataList[0].dataList;
+                    var provList = selectItemData.dataList[1].dataList;
+                    //初始化"账期"下拉列表数据
+                    fillSelectOption($('#se_date'),acctList);
+                    //初始化"省份"下拉列表数据
+                    if(!(provList instanceof Array)){
+                        provList = [provList];
+                    }
+                    fillSelectOption($('#se_pro'),provList);
+                    removeLoadingImage();
+                    //根据所选省份编码，获取地市下拉列表数据
+                    getCitydata($('#se_pro').val());
+    			}else{
+    				removeLoadingImage();
+    				alert('获取数据为空！');
+    			}
+    		}else{
+    			removeLoadingImage();
+    		}
+      	}
+  	}
+
+	//设置"地市"下拉列表数据
+	function getCitydata(provCode){
+    	var xmlhttp = getajaxHttp();
+    	initLoadingImage();
+    	var cityurl = hostUrl + 'appService2/getMonitorReportCitySelectData/'+ userId +'/'+ provCode +'/' + tokenId;
+    	//console.log(cityurl);
+    	xmlhttp.open("GET",cityurl,true);
+    	xmlhttp.send();
+    	xmlhttp.onreadystatechange=function(){
+        	if(xmlhttp.readyState==4){
+        		if(xmlhttp.status==200){
+	        		if(!xmlhttp.responseText||xmlhttp.responseText==null){
+	        			removeLoadingImage();
+		              	alert('获取数据为空！');return;
+		            }
+		            var forms = JSON.parse(xmlhttp.responseText);
+		            if(forms.selectItemData.retCode != 'success'){
+                		removeLoadingImage();
+                		if(forms.selectItemData.retCode=="invalid"){
+                			alert(forms.selectItemData.message);
+                			loginOutWithInvalid();
+                			return;
+                		}else{
+                			alert('获取数据为空！');return;
+                		}
+                	}
+	               	var cityList = forms.selectItemData.dataList.dataList;
+	                if(!(cityList instanceof Array)){
+	                	cityList = [cityList];
+	                }
+	               	fillSelectOption($('#se_city'),cityList);
+	               	removeLoadingImage();
+	               	getReportdata($('#se_date').val(),$('#se_pro').val(),$('#se_city').val());
+        		}else{
+        			removeLoadingImage();
+    				alert('获取数据为空！');
+        		}
+          	}else{
+          		removeLoadingImage();
+          	}
+      	}
+  	}
+  	
+  	//根据所选账期、省份、地市，获取报表数据
+  	function getReportdata(acctDate,provCode,areaCode){
+    	initLoadingImage();
+    	setLsqsAreaNames();
+    	var xmlhttp = getajaxHttp();
+    	var ydurl = hostUrl + 'appService2/getMonitorReportTypeData/' + userId + '/' + modelId + '/'+ acctDate + '/' + provCode + '/' + areaCode + '/' + tokenId;
+    	console.log(ydurl);
+    	xmlhttp.open("GET",ydurl,true);
+    	xmlhttp.send();
+    	xmlhttp.onreadystatechange=function(){
+        	if (xmlhttp.readyState==4){
+        		if(xmlhttp.status==200){
+	        		if(!xmlhttp.responseText||xmlhttp.responseText==null){
+	        			removeLoadingImage();
+		            	alert('获取数据为空！');return;
+		            }
+		            var forms = JSON.parse(xmlhttp.responseText);
+	               	if(forms.jkbb.code != 'secuess'){
+	               		removeLoadingImage();
+	               		if(forms.jkbb.code=="invalid"){
+	               			alert(forms.jkbb.message);
+                			loginOutWithInvalid();
+                			return;
+	               		}else{
+	                		alert('获取数据为空！');return;
+	               		}
+	               	}
+	               	isLoadData = true;
+	                console.log(forms);
+	                o_jkbbTList = forms.jkbb.jkbbTList;
+	                //判断是否有指标这一层
+	                if(o_jkbbTList == undefined || o_jkbbTList == null){
+	                	removeLoadingImage();
+	                   	alert('获取数据为空！');return;
+	               	}
+	               	//判断指标一层or多层
+	                if(!(o_jkbbTList instanceof Array)){
+	                  	o_jkbbTList = [o_jkbbTList];
+	                }
+	               	$('#targetName').html('');
+	                for(var i=0; i<o_jkbbTList.length; i++){
+	                  	$('#targetName').append('<option value="' + i + '">' + o_jkbbTList[i].targetName + '</option>');
+	                }
+	                var hasdata = false,targetnuma = -1;
+	                for(var i=0; i<o_jkbbTList.length; i++){
+	                	if(o_jkbbTList[i].jkbbTDList[0].jkbbTDDList){
+	                    	hasdata = true;
+	                    	targetnuma = i;
+	                    	break;
+	                  	}
+	                }
+	               	if(!hasdata||targetnuma==-1){
+	               		removeLoadingImage();
+	                 	alert('获取数据为空！');return;
+	               	}
+	               	//设置日期滑动值：固定的初始化
+	                if(dateSwiper.slides.length > 0){
+	                   	dateSwiper.removeAllSlides();
+	               	}
+	                var o_jkbbTDDList0 = o_jkbbTList[targetnuma].jkbbTDList[0].jkbbTDDList;
+	                if(o_jkbbTDDList0 instanceof Array){
+	                 	for(var j=(o_jkbbTDDList0.length-1),i=0; j>=0; j--){
+	                     	dateSwiper.appendSlide('<div class="swiper-slide">'+ formatYMD(o_jkbbTDDList0[j].acctData1+'') +'</div>');
+	                   	}
+	                  	dateSwiper.slidersnum = o_jkbbTDDList0.length;
+	                }else{
+	                 	dateSwiper.appendSlide('<div class="swiper-slide">'+ formatYMD(o_jkbbTDDList0.acctData1+'') +'</div>');
+	                   	dateSwiper.slidersnum = 1;
+	                }
+	               	//修改历史趋势中的年月日显示
+	                for(var t=0;t<o_jkbbTList.length;t++){
+	                  	var tempTDDList = o_jkbbTList[t].jkbbTDList[1].jkbbTDDList;
+		              	if(tempTDDList == undefined || tempTDDList == null){
+		                	continue;
+		                }
+	                  	var o_titlelist = o_jkbbTList[t].jkbbTDList[1].jkbbTDDList.titleList;
+	                   	//判断是否是一天
+	                   	if(!(o_titlelist instanceof Array)){
+	                      	var titleList = o_jkbbTList[t].jkbbTDList[1].jkbbTDDList.titleList;
+	                      	o_jkbbTList[t].jkbbTDList[1].jkbbTDDList.titleList = [titleList];
+	                      	var curValueList = o_jkbbTList[t].jkbbTDList[1].jkbbTDDList.curValueList;
+	                      	o_jkbbTList[t].jkbbTDList[1].jkbbTDDList.curValueList = [curValueList];
+	                      	var kpiValueList = o_jkbbTList[t].jkbbTDList[1].jkbbTDDList.kpiValueList;
+	                      	o_jkbbTList[t].jkbbTDList[1].jkbbTDDList.kpiValueList = [kpiValueList];
+	                      	var kpiRatioList = o_jkbbTList[t].jkbbTDList[1].jkbbTDDList.kpiRatioList;
+	                      	o_jkbbTList[t].jkbbTDList[1].jkbbTDDList.kpiRatioList = [kpiRatioList];
+	                   	}
+	                }
+	                //创建qyfz图、表，slider滑动触发填充图和表
+	                if(qyfzOrLsqsTabIndex == 0){
+	                  init_fzqs();
+	                }
+	                if(qyfzOrLsqsTabIndex == 1){
+	                  init_lsqs();
+	                }
+	                removeLoadingImage();
+        		}else{
+        			removeLoadingImage();
+    				alert('获取数据为空！');
+        		}
+          	}else{
+          		removeLoadingImage();
+          	}
+      	}
+  	}
+  	
+  	//设置历史趋势页面中展示的区域信息
+	function setLsqsAreaNames(){
+		var lsqsAreaName = "";
+	  	var seProName = $('#se_pro').find("option:selected").text();
+	  	var seCitName = $('#se_city').find("option:selected").text();
+	  	if(seProName==""&&seCitName!=""){lsqsAreaName=seCitName;}
+	  	if(seProName!=""&&seCitName==""){lsqsAreaName=seProName;}
+	  	if(seProName!=""&&seCitName!=""){lsqsAreaName=seProName+"-"+seCitName;}
+	  	$("#lsqs_areaName").html(lsqsAreaName);
+	}
+  	
+  	//初始化"区域发展"页面数据
+ 	function init_fzqs(){
+  		$('#chartLsqs').css('top','-9999px');
+  		$('#chartQyfz').css('top','0');
+  		var targetIndex = $('#targetName').val();
+  		if(!o_jkbbTList[targetIndex].jkbbTDList[0].jkbbTDDList){
+    		alert('当前指标数据为空，可以尝试切换其他指标！');return;
+  		}
+  		if((dateSwiper.slidersnum-1) == dateSwiper.activeIndex){
+       		var o_data;
+	        if(o_jkbbTList[targetIndex].jkbbTDList[0].jkbbTDDList instanceof Array){
+	          o_data = o_jkbbTList[targetIndex].jkbbTDList[0].jkbbTDDList[0];
+	        }else{
+	          o_data = o_jkbbTList[targetIndex].jkbbTDList[0].jkbbTDDList;
+	        }
+       		var legendNames= o_jkbbTList[targetIndex].jkbbTDList[0].legendNames;
+       		var tabColNames= o_jkbbTList[targetIndex].jkbbTDList[0].tabColNames;
+       		var legendUnits= o_jkbbTList[targetIndex].jkbbTDList[0].legendUnits;
+       		fill_tab_qyfz(o_data,tabColNames,legendUnits);
+       		fill_chart_qyfz(o_data,legendNames,legendUnits);
+      	}else{
+        	dateSwiper.slideTo((dateSwiper.slidersnum-1));
+      	}
+ 	}
+  	
+	//填充"区域发展"页面表格数据
+  	function fill_tab_qyfz(o_data,tabColNames,legendUnits){
+  		var t_titleList = o_data.titleList.concat();
+  		var t_curValueList = o_data.curValueList.concat();
+  		var t_kpiValueList = o_data.kpiValueList.concat();
+  		var t_kpiRatioList = o_data.kpiRatioList.concat();
+		//填充数据表格表头信息
+    	var t_tableft = $('#t_tableft').html();
+    	$('#tableft').html(doT.template( t_tableft )( t_titleList ));
+    	if(!$('#tableft').find('.cityhead').length){
+      		$('#tableft').prepend('<li class="cityhead">分公司</li>');
+    	}
+		$('#tabtop').find('tr').remove();
+      	var tabColNamesArray = tabColNames.split(',');
+      	if(tabColNamesArray.length==2){
+      		$('#tabtop').append('<tr><td><span>'+tabColNamesArray[0]+'</span><p>'+tabColNamesArray[0]+'</p></td><td><span>'+tabColNamesArray[1]+'</span><p>'+tabColNamesArray[1]+'</p></td></tr>');
+      	}
+      	if(tabColNamesArray.length==3){
+      		$('#tabtop').append('<tr><td><span>'+tabColNamesArray[0]+'</span><p>'+tabColNamesArray[0]+'</p></td><td><span>'+tabColNamesArray[1]+'</span><p>'+tabColNamesArray[1]+'</p></td><td><span>'+tabColNamesArray[2]+'</span><p>'+tabColNamesArray[2]+'</p></td></tr>');
+      	}
+		//填充数据表格表体信息
+	  	var legendUnitsArray = legendUnits.split(',');
+		if(tabColNamesArray.length==2){
+			var datas = [t_kpiValueList,t_kpiRatioList,legendUnitsArray[1]];
+    		var t_tabqyfz=$('#t_tab_qyfz2').html();
+    		$('#tabdatas').html(doT.template( t_tabqyfz )( datas ));
+		}
+		if(tabColNamesArray.length==3){
+			var datas = [t_curValueList,t_kpiValueList,t_kpiRatioList,legendUnitsArray[1]];
+    		var t_tabqyfz=$('#t_tab_qyfz3').html();
+    		$('#tabdatas').html(doT.template( t_tabqyfz )( datas ));
+		}
+		//设置数据表格的样式
+		resetTableTdCss(tabColNamesArray);
+  	}
+  	
+	//填充"区域发展"页面图形数据
+  	function fill_chart_qyfz(o_data,legendNames,legendUnits){
+    	var t_titleList = o_data.titleList.concat();
+    	var t_kpiRatioList = tofloat(o_data.kpiRatioList.concat());
+    	var t_kpiValueList = removethousand(o_data.kpiValueList.concat());
+    	/*
+    	if(t_titleList.length > maxPodeNum){
+	    	var wc = $(window).width() + podeWidth * (t_titleList.length - maxPodeNum);
+	     	$('#chartQyfz').css('width',wc);
+    	}else{
+      		$('#chartQyfz').css('width','100%');
+    	}
+    	*/
+    	//图形图例名称、单位
+	 	var legendNamesArray = legendNames.split(',');
+	  	var legendUnitsArray = legendUnits.split(',');
+	 	//生成区域发展图形
+  		$('#chartQyfz').highcharts({
+  			chart:{
+	            zoomType: 'x', 
+ 	            backgroundColor: '#fff',
+	            resetZoomButton: {
+	            	theme: {
+	                	display: 'none'
+	                }
+	            }
+			},
+	        title: {text: ''},
+	        tooltip:{
+	        	shared: true
+	        },
+	        loading: {
+	            labelStyle: {
+	                color: 'white'
+	            },
+	            style: {
+	                backgroundColor: 'none'
+	            }
+	        },
+	        xAxis: {
+	            tickInterval: 0,
+	            tickWidth: 0,
+	            lineWidth: 0,
+	            labels: {
+	        		rotation: -60,
+	                align: 'right',
+	                style: {
+	                    fontSize: '10px',//修改字体
+	                    color:'#828282',
+	                },
+	            },
+	            categories:t_titleList
+	        },
+	        yAxis:[
+	        	{
+	                title: {                                                       
+	                    text: '',
+	                },
+	                labels: {
+	                	formatter:function(){
+	                		return formatThousand(this.value);
+	                	},                                                 
+	                    overflow: 'justify',
+	                    style: {
+	                        color:'#828282',
+	                        position:'absolute'
+	                    },
+	                    zIndex:99,
+	                },
+	                gridLineColor: '#c4c4c4'  
+	        	},
+	        	{
+	                title: {                                                       
+	                  text: '',                                             
+	                },
+	                labels: {  
+	                    format: '{value}'+legendUnitsArray[1],
+	                    overflow: 'justify',
+	                    style: {
+	                        color:'#828282',
+	                    }
+	                },
+	                gridLineColor: '#c4c4c4'  ,
+	                opposite: true
+	        	}
+	        ],
+	        series: [
+	        	{
+		            type:'column',
+		            name:legendNamesArray[0],
+		            tooltip: {
+		            	valueSuffix: ' '+legendUnitsArray[0]
+		        	},
+		        	data:t_kpiValueList
+	       		},
+	          	{
+		            type:'spline',
+		            name:legendNamesArray[1],
+		            yAxis: 1,
+		            tooltip: {
+		            	valueSuffix: ' '+legendUnitsArray[1]
+		        	},
+		        	data:t_kpiRatioList
+	        	}
+	        ],
+	        credits:{
+	             enabled:false,
+	        },
+	        legend: {
+	            enabled: true,
+	            align:'center',
+	            verticalAlign: 'top',
+	            itemMarginTop: 0,
+	            itemMarginBottom: 12,
+	            margin:0,
+	            padding:0,
+	            x:0,
+	            itemStyle: {
+	                color: '#ff715d',
+	                fontWeight: '400',
+	            }
+	        },
+	        plotOptions: {
+	            column: {
+	                pointPadding: 0,
+	                groupPadding: 0.1,
+	                borderWidth: 0,
+	                shadow: false,
+	                color:'#ff715d',
+	            },
+	            spline:{
+	              	color:'#15d7b5',
+	              	lineWidth:1,
+	              	marker: {
+	                  	radius: 3
+	              	}
+	            }, 
+	        }
+  		});
+  	}
+  	
+  	//初始化"历史趋势"页面数据
+  	function init_lsqs(){
+  		$('#chartQyfz').css('top','-9999px');
+  		$('#chartLsqs').css('top','0');
+  		var targetIndex = $('#targetName').val();
+  		var o_data = o_jkbbTList[targetIndex].jkbbTDList[1].jkbbTDDList;
+	  	if(!o_data||o_data==null){
+	    	alert('当前指标数据为空，可以尝试切换其他指标！');
+	    	return;
+	  	}
+	  	var legendNames= o_jkbbTList[targetIndex].jkbbTDList[1].legendNames;
+    	var tabColNames= o_jkbbTList[targetIndex].jkbbTDList[1].tabColNames;
+    	var legendUnits= o_jkbbTList[targetIndex].jkbbTDList[1].legendUnits;
+    	fill_tab_lsqs(o_data,tabColNames,legendUnits);
+    	fill_chart_lsqs(o_data,legendNames,legendUnits)
+ 	}
+
+	//填充"历史趋势"页面表格数据
+  	function fill_tab_lsqs(o_data,tabColNames,legendUnits){
+  		var t_titleList = o_data.titleList.concat();
+  		var t_curValueList = o_data.curValueList.concat();
+		var t_kpiValueList = o_data.kpiValueList.concat();
+    	var t_kpiRatioList = o_data.kpiRatioList.concat();
+  		//填充数据表格表头信息
+    	var t_tableft = $('#t_tableft').html();
+	    for(var i=0;i<t_titleList.length;i++){
+	    	t_titleList[i]=formatYMD2(t_titleList[i]+'');
+	    }
+	    $('#tableft').html(doT.template( t_tableft )( t_titleList ));
+	    if(!$('#tableft').find('.cityhead').length){
+	    	$('#tableft').prepend('<li class="cityhead">日期</li>');
+	    }
+		$('#tabtop').find('tr').remove();
+      	var tabColNamesArray = tabColNames.split(',');
+      	if(tabColNamesArray.length==2){
+      		$('#tabtop').append('<tr><td><span>'+tabColNamesArray[0]+'</span><p>'+tabColNamesArray[0]+'</p></td><td><span>'+tabColNamesArray[1]+'</span><p>'+tabColNamesArray[1]+'</p></td></tr>');
+      	}
+      	if(tabColNamesArray.length==3){
+      		$('#tabtop').append('<tr><td><span>'+tabColNamesArray[0]+'</span><p>'+tabColNamesArray[0]+'</p></td><td><span>'+tabColNamesArray[1]+'</span><p>'+tabColNamesArray[1]+'</p></td><td><span>'+tabColNamesArray[2]+'</span><p>'+tabColNamesArray[2]+'</p></td></tr>');
+      	}
+    	//填充数据表格表体信息
+	  	var legendUnitsArray = legendUnits.split(',');
+    	if(tabColNamesArray.length==2){
+    		var datas = [t_kpiValueList,t_kpiRatioList,legendUnitsArray[1]];
+    		var t_tablsqs = $('#t_tab_lsqs2').html();
+    		$('#tabdatas').html(doT.template( t_tablsqs )( datas ));
+    	}
+    	if(tabColNamesArray.length==3){
+    		var datas = [t_curValueList,t_kpiValueList,t_kpiRatioList,legendUnitsArray[1]];
+    		var t_tablsqs = $('#t_tab_lsqs3').html();
+    		$('#tabdatas').html(doT.template( t_tablsqs )( datas ));
+    	}
+    	//设置数据表格的样式
+		resetTableTdCss(tabColNamesArray);
+  	}
+  	
+	//填充"历史趋势"页面图形数据
+  	function fill_chart_lsqs(o_data,legendNames,legendUnits){
+    	var t_titleList = o_data.titleList.concat();
+	    var t_kpiRatioList = tofloat(o_data.kpiRatioList.concat());
+	    var t_kpiValueList = removethousand(o_data.kpiValueList.concat());
+	    //将展示数据格式化并反序排列
+    	for(var i=0;i<t_titleList.length;i++){
+    		t_titleList[i]=formatMD(t_titleList[i]+'');
+    	}
+    	t_titleList = t_titleList.reverse();
+	    t_kpiRatioList = t_kpiRatioList.reverse();
+	    t_kpiValueList = t_kpiValueList.reverse();
+	    /*
+    	if(t_titleList.length > maxPodeNum){
+      		var wc = $(window).width() + podeWidth * (t_titleList.length - maxPodeNum);
+      		$('#chartLsqs').css('width',wc);
+    	}else{
+      		$('#chartLsqs').css('width','100%');
+    	}
+    	*/
+	    //图形图例名称、单位
+	 	var legendNamesArray = legendNames.split(',');
+	  	var legendUnitsArray = legendUnits.split(',');
+	  	//生成历史趋势图形
+	  	$('#chartLsqs').highcharts({
+	  		chart:{
+				zoomType: 'x',                   
+	            backgroundColor: '#fff',
+	            resetZoomButton: {
+	                theme: {
+	                    display: 'none'
+	                }
+	            }
+	        },
+	        title: {text: ''},
+	        tooltip:{
+	        	shared: true
+	        },
+	        loading: {
+	            labelStyle: {
+	                color: 'white'
+	            },
+	            style: {
+	                backgroundColor: 'none'
+	            }
+	        },
+	        xAxis: {
+	            tickInterval: 0,
+	            tickWidth: 0,
+	            lineWidth: 0,
+	            labels: {
+	                rotation: -60,
+	                align: 'right',
+	                style: {
+	                    fontSize: '10px',
+	                    color:'#828282',
+	                },
+	            },
+	            categories:t_titleList
+	        },
+	        yAxis:[
+	        	{
+	                title: {                                                       
+	                    text: '',
+	                },
+	                labels: {
+	                	formatter:function(){
+	                		return formatThousand(this.value);
+	                	},                                                      
+	                    overflow: 'justify',
+	                    style: {
+	                        color:'#828282',
+	                        position:'absolute'
+	                    },
+	                    zIndex:99,
+	                },
+	                gridLineColor: '#c4c4c4'  
+	            },
+	            {
+	                title: {                                                       
+	                  text: '',                                             
+	                },                                                             
+	                labels: {  
+	                    format: '{value}'+legendUnitsArray[1],                                                    
+	                    overflow: 'justify',
+	                    style: {
+	                        color:'#828282',
+	                    }
+	                },
+	                gridLineColor: '#c4c4c4'  ,
+	                opposite: true
+	        	}
+	        ],
+	        series: [
+	        	{
+		            type:'column',
+		            name:legendNamesArray[0],
+		            tooltip: {
+		            	valueSuffix: ' '+legendUnitsArray[0]
+		        	},
+		        	data:t_kpiValueList
+	          	},
+	          	{
+		            type:'spline',
+		            name:legendNamesArray[1],
+		            yAxis: 1,
+		            tooltip: {
+		            	valueSuffix: ' '+legendUnitsArray[1]
+		        	},
+		        	data:t_kpiRatioList
+	        	}
+	        ],
+	        credits:{
+	        	enabled:false,
+	        },
+	        legend: {
+	            enabled: true,
+	            align:'center',
+	            verticalAlign: 'top',
+	            itemMarginTop: 0,
+	            itemMarginBottom: 12,
+	            margin:0,
+	            padding:0,
+	            x:0,
+	            itemStyle: {
+	            	color: '#ff715d',
+	                fontWeight: '400',
+	            }
+	        },
+	        plotOptions: {
+	        	column: {
+	                pointPadding: 0,
+	                groupPadding: 0.1,
+	                borderWidth: 0,
+	                shadow: false,
+	                color:'#ff715d',
+	            },
+	            spline:{
+	              	color:'#15d7b5',
+	              	lineWidth:1,
+	              	marker: {
+	                  	radius: 3
+	              	}
+	            }, 
+	        } 
+	  	});
+  	}
+  	
+	//表头滑动
+  	var valuename = $('#valuetab>.valuedata>thead');
+  	var values = $('#valuetab'),cityw = $('.citywrap').outerWidth();
+  	valuename.css('left',cityw);
+  	values.scroll(function() {
+     	valuename.css('left',(-values.scrollLeft()+cityw));
+  	});
+  	
+});
+  
+</script>
+</body>
+</html>

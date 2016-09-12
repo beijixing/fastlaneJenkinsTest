@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WarningSettingVC">
+            <connections>
+                <outlet property="settingSegmentControl" destination="LQW-FR-QfZ" id="gQf-mi-En0"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="warningSettingTable" destination="n0V-MJ-QG9" id="7TH-fJ-MKv"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A0s-Vi-LGu">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="47"/>
+                    <subviews>
+                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="LQW-FR-QfZ">
+                            <rect key="frame" x="80" y="2" width="160" height="29"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="28" id="y6k-wy-gm4"/>
+                            </constraints>
+                            <segments>
+                                <segment title="日指标"/>
+                                <segment title="月指标"/>
+                            </segments>
+                            <connections>
+                                <action selector="segmentedControlAction:" destination="-1" eventType="valueChanged" id="4qV-cx-Mf0"/>
+                            </connections>
+                        </segmentedControl>
+                    </subviews>
+                    <color key="backgroundColor" red="1" green="0.44313725490196076" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="LQW-FR-QfZ" secondAttribute="trailing" constant="80" id="00v-qJ-yMh"/>
+                        <constraint firstItem="LQW-FR-QfZ" firstAttribute="leading" secondItem="A0s-Vi-LGu" secondAttribute="leading" constant="80" id="4Sk-O2-Zlu"/>
+                        <constraint firstItem="LQW-FR-QfZ" firstAttribute="top" secondItem="A0s-Vi-LGu" secondAttribute="top" constant="2" id="mdm-vH-6rK"/>
+                        <constraint firstAttribute="height" constant="47" id="oqe-ws-wP4"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="n0V-MJ-QG9">
+                    <rect key="frame" x="0.0" y="47" width="320" height="521"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="q3L-by-DbI"/>
+                        <outlet property="delegate" destination="-1" id="FNN-JF-P66"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="A0s-Vi-LGu" secondAttribute="trailing" id="DtZ-dc-qS3"/>
+                <constraint firstItem="n0V-MJ-QG9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="LSQ-Wc-e8S"/>
+                <constraint firstAttribute="bottom" secondItem="n0V-MJ-QG9" secondAttribute="bottom" id="RUI-EF-xua"/>
+                <constraint firstItem="A0s-Vi-LGu" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="TKe-Lx-Pao"/>
+                <constraint firstAttribute="trailing" secondItem="n0V-MJ-QG9" secondAttribute="trailing" id="amE-HL-meP"/>
+                <constraint firstItem="A0s-Vi-LGu" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="bZM-o2-WVl"/>
+                <constraint firstItem="n0V-MJ-QG9" firstAttribute="top" secondItem="A0s-Vi-LGu" secondAttribute="bottom" id="upw-fX-rJS"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+</document>

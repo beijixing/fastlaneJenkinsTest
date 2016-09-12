@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<title>横向对标数据展示</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection"content="telephone=no, email=no" />
+	<meta name="HandheldFriendly" content="true">
+	<meta name="MobileOptimized" content="320">
+	<meta name="msapplication-tap-highlight" content="no">
+	<meta name="apple-mobile-web-app-title" content="移动计费">
+	<link rel="stylesheet" type="text/css" href="css/style.css"/>
+	<link href="css/mobiscroll_date.css" rel="stylesheet" />
+	<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="js/swiper-3.3.1.min.js"></script>
+	<script type="text/javascript" src="js/doT.min.js"></script>
+	<script type="text/javascript" src="js/mobiscroll_date.js" charset="gb2312"></script> 
+	<script type="text/javascript" src="js/mobiscroll.js"></script> 
+	<script type="text/javascript" src="js/common.js"></script>
+	<!-- 定义页面中所使用的参数级全局变量 -->
+	<script type="text/javascript">
+  		var userId = 'xuchuan2';//用户名
+  		//var userId = 'lisi';//用户名
+  		var equipType = '1';//设备类型：1-iphone;2-ipad;3-android;
+  		var tokenId = 'test';//设备Token号
+  		var codes = 'DB_001,DB_002';// 所选对标指标列表
+  		var areas = 'V0371000,V0371100,V0371200';// 所选对标区域列表
+  		//var codes = 'DB_005,DB_101,DB_003,DB_004,DB_001';// 所选对标指标列表
+  		//var areas = 'V0150000,V0120000,V0140000,V0110000,V0130000';// 所选对标区域列表
+		//var hostUrl = 'http://127.0.0.1:8080/WO_UnicomPro/service/';// 服务请求地址
+		var hostUrl = 'http://124.133.15.93:8080/WO_UnicomPro/service/';// 服务请求地址
+		//var hostUrl = 'http://202.99.45.60:8899/wojk/service/';// 服务请求地址
+	</script>
+  <script>
+
+  </script>
+</head>
+<body class='fulls'>
+	<div class='topwrap'>
+		<div class='header box'>
+	  		<a class='iconfont iconw32' id='backicon'>&#xe601;</a> <!-- 返回按钮   注意id  不要漏掉-->
+	    	<div class='lc-datebox clearfix'>
+	        	<label for='lc-dayradio' class='lc-dmlable'>
+		            <div class='box'>
+		            	<input type="radio" id='lc-dayradio' name='lc-DM' value="1" checked="checked"/>
+		            	<div class='lc-dayinputw'><input name="lc-day" id="lc-day" type='text' readonly placeholder="按日期" /></div>
+		            </div>
+	          	</label>
+	          	<label for='lc-mouthradio' class='lc-dmlable'>
+	            	<div class='box'>
+	             		<input type="radio" id='lc-mouthradio' value="2" name='lc-DM'/>
+	             		<div class='lc-dayinputw'><input name='lc-mouth' id='lc-mouth' type='text' readonly placeholder="按月份"/></div>
+	            	</div>
+	          	</label>
+	    	</div>
+		</div>
+	</div>
+	<div class='swiper-container lc-datawrap'>
+  		<div class="swiper-wrapper" id='t_lc_data'></div>
+  		<div class="swiper-pagination"></div>
+	</div>
+    <script type="text/template" id='t_lc_swiper'>
+      {{ for (var i = 0; i < it.length; i++) { }}
+    		<div class="swiper-slide">
+            	<div class='lc-t-dataw'>
+                  	<h2>{{=it[i].kpiName}}</h2>
+                  	<div class='lc-tuli'>
+                    	<i class='lc-red'></i><span>本期值</span>
+						<i class='lc-yellow'></i><span>日均环比</span>
+						<i class='lc-zi'></i><span class='lc_ljlx_name'>本月累计</span>
+						<i class='lc-lv'></i><span>累计同比</span>
+                  	</div>
+                  	<div class='lc-t-dataww'>
+                    	<div class='lc-t-datawww'>
+                      		<div class='lc-t-data clearfix'>
+                        		<ul class='lc-city'>
+                          			{{ for (var j = 0; j<it[i].dataList.length; j++) { }}
+                                	<li>
+									<span>{{=it[i].dataList[j].areaName}}</span>
+									<p>{{=it[i].dataList[j].areaName}}</p>
+									</li>
+                          			{{ } }}
+                        		</ul>
+                        		<div class='lc-valw'>
+                              		{{ for (var j = 0; j<it[i].dataList.length; j++) { }}
+                                		<ul class='lc-val'>
+                                  			<li><i class='lc-red' style='width:{{=it[i].dataList[j].cssBQStyle+'%'}};'></i><em>{{=it[i].dataList[j].bq}}</em></li>
+                                  			<li><i class='lc-yellow' style='width:{{=it[i].dataList[j].cssStyle+'%'}};'></i><em>{{=it[i].dataList[j].rj}}</em></li>
+                                  			<li><i class='lc-zi' style='width:{{=it[i].dataList[j].cssBYStyle+'%'}};'></i><em>{{=it[i].dataList[j].by}}</em></li>
+                                  			<li><i class='lc-lv' style='width:{{=it[i].dataList[j].cssLJStyle+'%'}};'></i><em>{{=it[i].dataList[j].lj}}</em></li>
+                                		</ul>
+                              		{{ } }}
+                        		</div>
+                      		</div>
+                    	</div>
+                 	</div>
+                </div>
+            </div>
+      {{ } }}
+    </script>
+
+<script type="text/javascript"> 
+$(document).ready(function(){
+
+	//*****************************初始化Android、IOS端的参数**********************************/
+	if(common.osName()=="iphone"){
+		//调用定义桥接的方法，获取传入的参数
+		setupWebViewJavascriptBridge(function(bridge) {
+			bridge.registerHandler('setJSParams', function(data, responseCallback) {
+		    	initParamValue(data.areas,data.codes,data.equipType,data.userId,data.tokenId,data.hostUrl);
+		        var responseData = { 'Javascript Says':'Right back atcha!','data' : data};
+		        responseCallback(responseData);
+		    });
+		});
+		//重新设置全局变量参数
+		function initParamValue(_areas, _codes, _equipType, _userId, _tokenId, _hostUrl){
+           	areas = _areas;//ios修改
+            codes = _codes;
+            equipType = _equipType;
+            userId = _userId;
+            tokenId = _tokenId; 
+            hostUrl = _hostUrl;
+            //获取默认时间的横向对标数据
+            getDDate(); 
+		}
+        //设置返回按钮事件
+        $('#backicon').click(function() {
+	    	setupWebViewJavascriptBridge(function(bridge) {
+	        	bridge.callHandler('backAction', function responseCallback(responseData) {});
+	        });
+	  	});		
+	}else if(common.osName()=="android"){
+		//重新设置全局变量参数
+	  	var searchurl = window.location.search;
+	  	var request = getUrlA(searchurl);
+	  	areas = request['areas']; 
+	  	codes = request['codes']; 
+	  	equipType = request['equipType']; 
+	  	userId = request['userId']; 
+	  	tokenId = request['tokenId'];
+	  	hostUrl = request['hostUrl'];
+	  	//获取默认时间的横向对标数据
+	  	getDDate();
+		//设置返回按钮事件
+ 		$('#backicon').click(function() {
+			nativeMethod.toActivity('a');
+		});
+	}else{
+		//获取默认时间的横向对标数据
+	  	getDDate();
+	}
+	
+	//*************************************************************************************/
+
+	//初始化targetswiper
+  	var t_lc_data = $('#t_lc_data'), lc_swiper = $('#t_lc_swiper');
+  	var targetswiper = new Swiper ('.lc-datawrap', {
+    	loop: false,
+    	initialSlide :0,
+    	pagination: '.swiper-pagination',
+  	});
+  	
+  	var isInitData=true;
+
+	//获取横向对标默认账期下的数据
+  	function getDDate(){
+  		initLoadingImage();
+   		var date_xmlhttp = getajaxHttp();
+    	var date_url = hostUrl + 'appService2/getMaxAcctDate/'+ userId + '/' + 10 + '/' + tokenId;
+    	//console.log(date_url);
+    	date_xmlhttp.open("GET",date_url,true);
+    	date_xmlhttp.send();
+    	date_xmlhttp.onreadystatechange=function(){
+	      	if(date_xmlhttp.readyState==4){
+	      		if(date_xmlhttp.status==200){
+	      			if(!date_xmlhttp.responseText||date_xmlhttp.responseText==null){
+    					removeLoadingImage();
+                 		alert('获取数据为空！');return;
+                	}
+                	if(date_xmlhttp.responseText=="invalid"){
+                		alert('当前登录用户已失效，请重新登录！');
+                		loginOutWithInvalid();return;
+                	}
+	      			var d_date = JSON.parse(date_xmlhttp.responseText);
+		        	if(d_date!=null){
+		          		$("#lc-day").attr("placeholder",d_date.D);
+		          		$("#lc-mouth").attr("placeholder",d_date.M);
+		          		var datetime = (d_date.D).replace(/-/g,'');
+		          		$("#lc-day").scroller('setDate', new Date(d_date.D), true);
+		          	    $("#lc-mouth").scroller('setDate', new Date(d_date.M), true);
+		          		removeLoadingImage();
+		          		getLCDate(datetime);
+		          		isInitData=false;
+		        	}else{
+		        		removeLoadingImage();
+		        		alert('获取数据为空！');
+		        	}
+	      		}else{
+	      			removeLoadingImage();
+		        	alert('获取数据为空！');
+	      		}
+	      	}else{
+	      		removeLoadingImage();
+	      	}
+    	}
+  	}
+
+	//获取横向对标数据
+  	function getLCDate(datetime){
+  		initLoadingImage();
+    	var s_url = hostUrl+ 'appService2/getInfeedCompareData/' + datetime + '/' + areas + '/' + codes + '/' + equipType + '/' +userId + '/' + tokenId;
+    	//console.log('数据url：' + s_url);
+    	var xmlhttp = getajaxHttp();
+    	xmlhttp.open("GET",s_url,true);
+    	xmlhttp.send();
+    	xmlhttp.onreadystatechange=function(){
+    		if(xmlhttp.readyState==4){
+    			if(xmlhttp.status==200){
+    				if(!xmlhttp.responseText||xmlhttp.responseText==null){
+    					removeLoadingImage();
+                 		alert('获取数据为空！');return;
+                	}
+              		var forms = JSON.parse(xmlhttp.responseText);
+              		console.log(forms);
+                 	if(forms.code != 'success'){
+                     	removeLoadingImage();
+	               		if(forms.code=="invalid"){
+	               			alert(forms.message);
+                			loginOutWithInvalid();
+                			return;
+	               		}else{
+	                		alert('获取数据为空！');return;
+	               		}
+                 	}
+                 	var lc_list = forms.data;
+                 	
+                 	//修改数据,增加指标中最大本期和本月
+                 	for(var i = 0; i < lc_list.length; i++){
+                    	//var maxbq,maxby;
+    	                var data = lc_list[i].dataList;
+    	                var bqArr = Array();//本期值，用于排序
+    	                var byArr = Array();//日均环比，用于排序
+    	                var fjArr = Array();//本月累计，用于排序
+    	                var ltjArr = Array();//累计同比，用于排序
+                     	
+                       	for(var j = 0; j<data.length; j++){
+                      		fjArr[j] = parseFloat(data[j].rj);
+                      		ltjArr[j] = parseFloat(data[j].lj);
+                      		
+    	                	data[j].bqNew = parseFloat(data[j].bq.replace(/,/g,''));//将千分位的数字转为float型
+    	                	data[j].byNew = parseFloat(data[j].by.replace(/,/g,''));//将千分位的数字转为float型
+    	                	
+    	                	data[j].lj = (data[j].lj=="--")?"--":data[j].lj+"%";
+    	                	data[j].rj = (data[j].rj=="--")?"--":data[j].rj+"%";
+                      
+    	                  	bqArr[j] = data[j].bqNew;//放入数组中
+    	                 	byArr[j] = data[j].byNew;
+                       	}
+                       
+                        var sortFJArr = fjArr.sort(function(a,b){return a<b?1:-1});//对数组按照从大到小的顺序排序
+                        for(var m = 0; m<data.length; m++){
+                        	var arrIndex = $.inArray(parseFloat(data[m].rj),sortFJArr);//查找元素在数组中的下标值
+                        	if(arrIndex != -1){
+                        		data[m].cssStyle = parseInt(80/data.length) * (data.length - arrIndex);//计算需要显示的比例
+                        	}else{
+                        		data[m].cssStyle = 10;
+                        	}	
+                        }
+                       
+                        var sortLTJArr = ltjArr.sort(function(a,b){return a<b?1:-1});
+                        for(var m = 0; m<data.length; m++){
+                       		var arrIndex = $.inArray(parseFloat(data[m].lj),sortLTJArr);
+                        	if(arrIndex != -1){
+                        		data[m].cssLJStyle = parseInt(80/data.length) * (data.length - arrIndex);
+                        	}else{
+                        		data[m].cssLJStyle = 10;
+                        	}
+                        }
+                       
+                        var sortBQArr = bqArr.sort(function(a,b){return a<b?1:-1});
+                        for(var m = 0; m<data.length; m++){
+                        	var arrIndex = $.inArray(parseFloat(data[m].bqNew),sortBQArr);
+                        	if(arrIndex != -1){
+                        		data[m].cssBQStyle = parseInt(80/data.length) * (data.length - arrIndex);
+                        	}else{
+                        		data[m].cssBQStyle = 10;
+                        	}
+                        }
+                       
+                        var sortBYArr = byArr.sort(function(a,b){return a<b?1:-1});
+                        for(var m = 0; m<data.length; m++){
+                        	var arrIndex = $.inArray(parseFloat(data[m].byNew),sortBYArr);
+                        	if(arrIndex != -1){
+                        		data[m].cssBYStyle = parseInt(80/data.length) * (data.length - arrIndex);
+                        	}else{
+                        		data[m].cssBYStyle = 10;
+                        	}
+                        }
+                    }
+                     
+                   	//初始化数据
+                   	var t_lc_swiper = lc_swiper.html();
+                   	t_lc_data.html(doT.template( t_lc_swiper )( lc_list ));
+                   	targetswiper.appendSlide(t_lc_data.find('.swiper-slide'));
+    			  	var radioValue=$('input:radio[name="lc-DM"]:checked').val();
+    			  	if(radioValue=="1"){
+    					$(".lc_ljlx_name").html('本月累计');
+    			  	}
+    			  	if(radioValue=="2"){
+    					$(".lc_ljlx_name").html('本年累计');
+    			  	}
+    			  	removeLoadingImage();
+    			}else{
+    				removeLoadingImage();
+    				alert('当前日期数据为空！');
+    			}
+    		}else{
+    			removeLoadingImage();
+    		}
+    	}
+  	}
+  
+  	//"按日期"单选按钮点击事件
+   	$("#lc-dayradio").click(function() { 
+		var dt = $("#lc-day").val();
+		if(dt==null||dt==""){
+			dt = $("#lc-day").attr("placeholder");
+		}
+		dt = dt.replace(/-/g,'');
+		getLCDate(dt);
+   	});
+   
+    //"按月份"单选按钮点击事件
+	$("#lc-mouthradio").click(function() {
+		var dt = $("#lc-mouth").val();
+		if(dt==null||dt==""){
+			dt = $("#lc-mouth").attr("placeholder");
+		}
+		dt = dt.replace(/-/g,'');
+		getLCDate(dt);
+   	});
+  
+	//输入框值改变事件
+  	$('.lc-dmlable input[type="text"]').change(function(){
+  		if(isInitData){return;};
+    	$('#'+$(this).attr('id')+'radio')[0].checked = true;
+    	var dt = $(this).val();
+	    if(new Date(dt)){
+	      	dt = dt.replace(/-/g,'');
+	      	getLCDate(dt);
+	    }else{
+	      	alert('请选择日期');
+	    }
+  	});
+
+	//选择"日期"日历创建
+  	var currYear = (new Date()).getFullYear();  
+  	var opt={};
+  	opt.date = {preset : 'date'};
+  	opt.datetime = {preset : 'datetime'};
+  	opt.time = {preset : 'time'};
+  	opt.default = {
+	    theme: 'android-ics light', //皮肤样式
+	    display: 'modal', //显示方式 
+	    mode: 'scroller', //日期选择模式
+	    dateFormat: 'yyyy-mm-dd',
+	    lang: 'zh',
+	    showNow: false,
+	    startYear: currYear - 10, //开始年份
+	    endYear: currYear + 10 //结束年份
+  	};
+  	//选择"月份"日历创建
+  	var opt1={};
+  	opt1.date = {preset : 'date'};
+  	opt1.datetime = {preset : 'datetime'};
+  	opt1.time = {preset : 'time'};
+  	opt1.default = {
+	    theme: 'android-ics light', //皮肤样式
+	    display: 'modal', //显示方式 
+	    mode: 'scroller', //日期选择模式
+	    dateFormat: 'yyyy-mm',
+	    lang: 'zh',
+	    showNow: false,
+	    dateOrder: 'yymm',
+	    startYear: currYear - 10, //开始年份
+	    endYear: currYear + 10, //结束年份
+  	};
+
+  	$("#lc-day").mobiscroll($.extend(opt['date'], opt['default']));
+  	$("#lc-mouth").mobiscroll($.extend(opt1['date'], opt1['default']));
+
+});
+
+</script>
+</body>
+</html>

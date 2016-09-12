@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<title>异动告警数据展示</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection"content="telephone=no, email=no" />
+	<meta name="HandheldFriendly" content="true">
+	<meta name="MobileOptimized" content="320">
+	<meta name="screen-orientation" content="portrait">
+	<meta name="x5-orientation" content="portrait">
+	<meta name="msapplication-tap-highlight" content="no">
+	<meta name="apple-mobile-web-app-title" content="移动计费">
+	<link rel="stylesheet" type="text/css" href="css/style.css"/>
+	<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="js/swiper-3.3.1.min.js"></script>
+	<script type="text/javascript" src="js/highcharts.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<!-- 定义页面中所使用的参数级全局变量 -->
+	<script type="text/javascript">
+		var userId = 'xuchuan2'; //用户名
+		var equipType = 1;//设备类型：1-iphone;2-ipad;3-android;
+		var tokenId = 'test';//设备Token号
+		//var hostUrl = 'http://127.0.0.1:8080/WO_UnicomPro/service/';// 服务请求地址
+		var hostUrl = 'http://124.133.15.93:8080/WO_UnicomPro/service/';// 服务请求地址
+		//var hostUrl = 'http://202.99.45.60:8899/wojk/service/';// 服务请求地址
+	</script>
+</head>
+<body class='fulls bg-gray new-fulls'>
+<!--	<div class='topwrap'>
+	  	<div class='header box'>
+ 	  		<h1 class="new-title">异动告警</h1>
+	  	</div>
+	</div>-->
+	<div id='warningwrap'>
+	  	<div class='warning mt60' >
+            <a class='iconfont iconw40 new-iconw40' id='settingBtnDay'>&#xe602;
+                </br>
+                <span>指标设置</span>
+            </a>
+ 	    	<p class='war-title'>今日告警	  		
+            </p>
+	    	<p class='war-subtitle' id='acctDay'></p>
+		    <div id='outapp'>
+		    	<a class='war-info' href='#'>
+		            <div class="new-cont">
+		                <span id='dayZDAmount' class="cor-red"></span>
+		            </div>
+		            <div class="new-detail">
+		                <h5 class="cor-red">重大告警数量</h5>
+		                <span id="dayZDTargets"></span>
+		            </div>
+		       	</a>
+		        <a class='war-info' href='#'>
+		            <div class="new-cont">
+		                <span id='dayYZAmount' class="cor-yel"></span>
+		            </div>
+		            <div class="new-detail">
+		                <h5 class="cor-yel">严重告警数量</h5>
+		                <span id="dayYZTargets"></span>
+		            </div>
+		        </a>
+			</div>
+		</div>
+  		<div class='warning mt15'>
+            <a class='iconfont iconw40 new-iconw40' id='settingBtnMon'>&#xe602;
+                </br>
+                <span>指标设置</span>
+            </a>
+     		<p class='war-title'>上月告警	  		
+            </p>
+    		<p class='war-subtitle' id='acctMonth'></p>
+    		<div id='outapp1'>
+          		<a class='war-info' href='#'>
+		            <div class="new-cont">
+		                <span id='monthZDAmount' class="cor-red"></span>
+		            </div>
+		            <div class="new-detail">
+		                <h5 class="cor-red">重大告警数量</h5>
+			            <span id="monthZDTargets"></span>   
+	              	</div>
+          		</a>
+          		<a class='war-info' href='#'>
+		            <div class="new-cont">
+		                <span id='monthYZAmount' class="cor-yel"></span>
+		            </div>
+            		<div class="new-detail">
+                		<h5 class="cor-yel">严重告警数量</h5>
+                		<span id="monthYZTargets"></span>   
+               		</div>
+          		</a>
+    		</div>
+  		</div>
+	</div>
+
+<script type="text/javascript">   
+$(document).ready(function(){
+
+	//*****************************初始化Android、IOS端的参数**********************************/
+	if(common.osName()=="iphone"){
+		//调用定义桥接的方法，获取传入的参数
+		setupWebViewJavascriptBridge(function(bridge) {
+	    	bridge.registerHandler('setJSParams', function(data, responseCallback) {
+	        	initParamValue(data.userId, data.equipType, data.tokenId, data.hostUrl);
+	            var responseData = { 'Javascript Says':'Right back atcha!','data' : data};
+	            responseCallback(responseData);
+	  		});
+	  	});
+	  	//重新设置全局变量参数
+	  	function initParamValue(_userId, _equipType, _tokenId, _hostUrl){
+		    userId = _userId;
+		    equipType = _equipType;
+		    tokenId = _tokenId;
+		    hostUrl = _hostUrl;
+		    getWarning();//获取异动告警数据
+		}
+		//设置返回按钮事件
+		$('#settingBtnDay').click(function() {
+	    	setupWebViewJavascriptBridge(function(bridge) {
+	        	bridge.callHandler('dayWarningSetting', function responseCallback(responseData) {});
+	    	});
+	  	});
+	  	$('#settingBtnMon').click(function() {
+	    	setupWebViewJavascriptBridge(function(bridge) {
+	        	bridge.callHandler('monthWarningSetting', function responseCallback(responseData) {});
+	    	});
+	  	});
+	  	$('#outapp').click(function() {
+			setupWebViewJavascriptBridge(function(bridge) {
+		    	bridge.callHandler('dayWarningAction', function responseCallback(responseData) {});
+		    });
+		});
+		$('#outapp1').click(function() {
+   			setupWebViewJavascriptBridge(function(bridge) {
+       			bridge.callHandler('monthWarningAction', function responseCallback(responseData) {});
+   			});
+ 		});
+	}else if(common.osName()=="android"){
+		//重新设置全局变量参数
+		var searchurl = window.location.search;
+		var request = getUrlA(searchurl);
+		userId = request['userId'];
+		equipType = request['equipType'];
+		tokenId = request['tokenId'];
+		hostUrl = request['hostUrl'];
+		//获取异动告警数据
+		getWarning();
+		//设置返回按钮事件
+		$('#settingBtnDay').click(function() {
+	    	 nativeMethod.toActivity('a');
+	  	});
+	  	$('#settingBtnMon').click(function() {
+	    	 setMethod.setActivity();
+	  	});
+	  	$('#outapp').click(function() {
+			 warning.goActivity();
+		});
+		$('#outapp1').click(function() {
+   			month.monthActivity();
+ 		});
+	}else{
+		//获取异动告警数据
+ 		getWarning();
+	}
+	
+	//*************************************************************************************/
+	
+	function getWarning(){
+		initLoadingImage();
+	    var xmlhttp = getajaxHttp(),alarm;
+	    var wurl = hostUrl + "appService2/getItemWarn/"+userId+"/"+equipType+"/" + tokenId;
+	    console.log(wurl);
+	    xmlhttp.open("GET",wurl,true);
+	    xmlhttp.send();
+	    xmlhttp.onreadystatechange=function(){
+	    	if(xmlhttp.readyState==4 ){
+	    		if(xmlhttp.status==200){
+	    			alarm = JSON.parse(xmlhttp.responseText);
+	    			console.log(alarm);
+	    			if(alarm.itemWarn.code != 'sucess'){
+                     	removeLoadingImage();
+	               		if(alarm.itemWarn.code=="invalid"){
+	               			alert(alarm.itemWarn.message);
+                			loginOutWithInvalid();
+                			return;
+	               		}
+                 	}
+		          	var s_acctday = alarm.itemWarn.acctDay.toString();
+		          	$('#acctDay').text(s_acctday.substring(0,4)+'年'+s_acctday.substring(4,6)+'月'+s_acctday.substring(6,8)+'日');
+		          	var s_acctmonth = alarm.itemWarn.acctMonth.toString();
+		          	$('#acctMonth').text(s_acctmonth.substring(0,4)+'年'+s_acctmonth.substring(4,6)+'月');
+		          	
+		          	//获取"今日告警-重大告警"信息
+		          	if(alarm.itemWarn.dayZDList!=null){
+		          		var dayZDTargets = "";
+		         		$('#dayZDAmount').text(alarm.itemWarn.dayZDList.length);
+		         		for(var i=0;i<alarm.itemWarn.dayZDList.length;i++){
+		         			var targetName = alarm.itemWarn.dayZDList[i].targetName;
+		         			dayZDTargets += "<p>"+targetName+"</p>";
+		         		}
+		         		$("#dayZDTargets").html(dayZDTargets);
+		          	}else{
+		          		$('#dayZDAmount').text('0');
+		          		$("#dayZDTargets").html('');
+		          	}
+		         	
+		          	//获取"今日告警-严重告警"信息
+		          	if(alarm.itemWarn.dayYZList!=null){
+		          		var dayYZTargets = "";
+		         		$('#dayYZAmount').text(alarm.itemWarn.dayYZList.length);
+		         		for(var i=0;i<alarm.itemWarn.dayYZList.length;i++){
+		         			var targetName = alarm.itemWarn.dayYZList[i].targetName;
+		         			dayYZTargets += "<p>"+targetName+"</p>";
+		         		}
+		         		$("#dayYZTargets").html(dayYZTargets);
+		          	}else{
+		          		$('#dayYZAmount').text('0');
+		          		$("#dayYZTargets").html('');
+		          	}
+		         	//获取"上月告警-重大告警"信息
+		          	if(alarm.itemWarn.monthZDList!=null){
+		          		var monthZDTargets = "";
+		         		$('#monthZDAmount').text(alarm.itemWarn.monthZDList.length);
+		         		for(var i=0;i<alarm.itemWarn.monthZDList.length;i++){
+		         			var targetName = alarm.itemWarn.monthZDList[i].targetName;
+		         			monthZDTargets += "<p>"+targetName+"</p>";
+		         		}
+		         		$("#monthZDTargets").html(monthZDTargets);
+		          	}else{
+		          		$('#monthZDAmount').text('0');
+		          		$("#monthZDTargets").html('');
+		          	}
+		          	//获取"上月告警-严重告警"信息
+		          	if(alarm.itemWarn.monthYZList!=null){
+		          		var monthYZTargets = "";
+		         		$('#monthYZAmount').text(alarm.itemWarn.monthYZList.length);
+		         		for(var i=0;i<alarm.itemWarn.monthYZList.length;i++){
+		         			var targetName = alarm.itemWarn.monthYZList[i].targetName;
+		         			monthYZTargets += "<p>"+targetName+"</p>";
+		         		}
+		         		$("#monthYZTargets").html(monthYZTargets);
+		          	}else{
+		          		$('#monthYZAmount').text('0');
+		          		$("#monthYZTargets").html('');
+		          	}
+		          	removeLoadingImage();
+	    		}else{
+	    			removeLoadingImage();
+	    			alert('获取数据为空！');
+	    		}
+	    	}else{
+	    		removeLoadingImage();
+	    	}
+	    }
+	}
+});
+  
+
+</script>
+</body>
+</html>

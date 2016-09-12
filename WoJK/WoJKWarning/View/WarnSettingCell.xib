@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="WarnSettingCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fUN-iE-c4h">
+                        <rect key="frame" x="15" y="42" width="305" height="1"/>
+                        <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="f8F-Jy-NgM"/>
+                        </constraints>
+                    </imageView>
+                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Go-NG-AgT">
+                        <rect key="frame" x="256" y="6" width="51" height="31"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="31" id="im1-WW-vAh"/>
+                            <constraint firstAttribute="width" constant="49" id="xs4-5G-tbz"/>
+                        </constraints>
+                        <connections>
+                            <action selector="stateSwitchAction:" destination="KGk-i7-Jjw" eventType="valueChanged" id="wo6-eN-Kl7"/>
+                        </connections>
+                    </switch>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="cBSS手机新发展用户占比" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Khp-un-8xg">
+                        <rect key="frame" x="15" y="6" width="233" height="31"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="4Go-NG-AgT" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="3bQ-b4-22L"/>
+                    <constraint firstAttribute="bottom" secondItem="Khp-un-8xg" secondAttribute="bottom" constant="6" id="ALm-MX-Bl1"/>
+                    <constraint firstItem="Khp-un-8xg" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="Bef-ll-hw5"/>
+                    <constraint firstAttribute="bottom" secondItem="fUN-iE-c4h" secondAttribute="bottom" id="HT1-NF-84h"/>
+                    <constraint firstItem="Khp-un-8xg" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="QdE-D8-6Ma"/>
+                    <constraint firstItem="4Go-NG-AgT" firstAttribute="leading" secondItem="Khp-un-8xg" secondAttribute="trailing" constant="8" id="UA0-Vd-pcx"/>
+                    <constraint firstAttribute="trailing" secondItem="fUN-iE-c4h" secondAttribute="trailing" id="YQX-fO-UAG"/>
+                    <constraint firstAttribute="trailing" secondItem="4Go-NG-AgT" secondAttribute="trailing" constant="15" id="dUV-LY-1dt"/>
+                    <constraint firstItem="fUN-iE-c4h" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="sTk-ta-mC7"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="indexName" destination="Khp-un-8xg" id="5QD-8v-825"/>
+                <outlet property="warnStateSwitch" destination="4Go-NG-AgT" id="x6H-MY-sWN"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

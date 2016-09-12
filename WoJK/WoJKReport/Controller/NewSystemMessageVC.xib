@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewSystemMessageVC">
+            <connections>
+                <outlet property="contentTextView" destination="PIp-lu-KAZ" id="cqq-47-oqt"/>
+                <outlet property="titleLB" destination="lvV-mY-edQ" id="zBb-4S-SwK"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SS5-W2-sdC">
+                    <rect key="frame" x="40" y="160" width="240" height="247"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="升级公告" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lvV-mY-edQ">
+                            <rect key="frame" x="66" y="26" width="108" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="Fgw-nA-3S5"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" red="0.85074118590000003" green="0.27964341860000003" blue="0.09347251945" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vAg-pQ-QTu">
+                            <rect key="frame" x="208" y="3" width="25" height="25"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="25" id="a3j-dq-maP"/>
+                                <constraint firstAttribute="height" constant="25" id="eh6-4u-PjE"/>
+                            </constraints>
+                            <state key="normal" backgroundImage="close.png"/>
+                            <connections>
+                                <action selector="actionClose:" destination="-1" eventType="touchUpInside" id="dyF-No-99P"/>
+                            </connections>
+                        </button>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="        各位领导同事：好！沃监控定于今日晚23：00进行系统升级，届时将会出现短暂的闪退现象，系统升级预计需要三个小时时间，需要进行监测是否正常。最晚将于次日6：00恢复正常，对此带来的不便，请各位领导同事见谅。" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PIp-lu-KAZ">
+                            <rect key="frame" x="8" y="55" width="224" height="184"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        </textView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="lvV-mY-edQ" secondAttribute="trailing" constant="66" id="C4N-JE-iNI"/>
+                        <constraint firstAttribute="height" constant="247" id="Fk0-ka-kdb"/>
+                        <constraint firstItem="lvV-mY-edQ" firstAttribute="leading" secondItem="SS5-W2-sdC" secondAttribute="leading" constant="66" id="Vd6-h1-LEh"/>
+                        <constraint firstAttribute="width" constant="240" id="bb3-K6-wHj"/>
+                        <constraint firstAttribute="bottom" secondItem="PIp-lu-KAZ" secondAttribute="bottom" constant="8" id="cBz-sv-otg"/>
+                        <constraint firstItem="PIp-lu-KAZ" firstAttribute="top" secondItem="lvV-mY-edQ" secondAttribute="bottom" constant="8" id="m4t-f5-urt"/>
+                        <constraint firstAttribute="trailing" secondItem="PIp-lu-KAZ" secondAttribute="trailing" constant="8" id="uEy-Ku-WUP"/>
+                        <constraint firstItem="lvV-mY-edQ" firstAttribute="top" secondItem="SS5-W2-sdC" secondAttribute="top" constant="26" id="uhD-Yh-jgS"/>
+                        <constraint firstItem="PIp-lu-KAZ" firstAttribute="leading" secondItem="SS5-W2-sdC" secondAttribute="leading" constant="8" id="w7H-iR-A37"/>
+                        <constraint firstItem="vAg-pQ-QTu" firstAttribute="top" secondItem="SS5-W2-sdC" secondAttribute="top" constant="3" id="y2d-ef-7O1"/>
+                        <constraint firstAttribute="trailing" secondItem="vAg-pQ-QTu" secondAttribute="trailing" constant="7" id="yaD-Dp-5wA"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="SS5-W2-sdC" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="AnG-Y1-5Qx"/>
+                <constraint firstItem="SS5-W2-sdC" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="VbI-Uh-lm1"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="close.png" width="98" height="98"/>
+    </resources>
+</document>

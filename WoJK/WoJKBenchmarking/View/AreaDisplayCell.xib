@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="AreaDisplayCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="poleSelected.png" translatesAutoresizingMaskIntoConstraints="NO" id="HCa-b6-6UH">
+                        <rect key="frame" x="284" y="9" width="25" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="25" id="asa-JN-kOt"/>
+                            <constraint firstAttribute="width" constant="25" id="ejR-uZ-V1N"/>
+                        </constraints>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iJT-UY-jHp">
+                        <rect key="frame" x="15" y="42" width="305" height="1"/>
+                        <color key="backgroundColor" red="0.91372549020000005" green="0.91372549020000005" blue="0.91372549020000005" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="s9Z-D2-ocQ"/>
+                        </constraints>
+                    </imageView>
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8c3-Xi-Nhi">
+                        <rect key="frame" x="272" y="4" width="40" height="35"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="40" id="5wZ-nH-dIo"/>
+                            <constraint firstAttribute="height" constant="35" id="be9-1z-MrM"/>
+                        </constraints>
+                        <state key="normal" backgroundImage="deleteSelected"/>
+                        <connections>
+                            <action selector="actionDelete:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="9Ze-q9-GZ0"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wof-RI-168">
+                        <rect key="frame" x="15" y="4" width="233" height="35"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="Wof-RI-168" secondAttribute="bottom" constant="4" id="Ius-k8-8iG"/>
+                    <constraint firstAttribute="trailing" secondItem="HCa-b6-6UH" secondAttribute="trailing" constant="11" id="Naw-SW-BLg"/>
+                    <constraint firstAttribute="trailing" secondItem="8c3-Xi-Nhi" secondAttribute="trailing" constant="8" id="NdY-Ex-9Vx"/>
+                    <constraint firstItem="HCa-b6-6UH" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Nyi-Aw-IG8"/>
+                    <constraint firstAttribute="trailing" secondItem="iJT-UY-jHp" secondAttribute="trailing" id="QKr-vT-jcC"/>
+                    <constraint firstItem="Wof-RI-168" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="4" id="Srm-0W-B9n"/>
+                    <constraint firstAttribute="bottom" secondItem="iJT-UY-jHp" secondAttribute="bottom" id="hKI-wj-jzE"/>
+                    <constraint firstItem="Wof-RI-168" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="qQT-3j-cdR"/>
+                    <constraint firstItem="iJT-UY-jHp" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="rxd-aK-iSe"/>
+                    <constraint firstItem="HCa-b6-6UH" firstAttribute="leading" secondItem="Wof-RI-168" secondAttribute="trailing" constant="36" id="t8y-i1-L98"/>
+                    <constraint firstItem="8c3-Xi-Nhi" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="vmj-jU-4aG"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="flagImage" destination="HCa-b6-6UH" id="yPw-Yr-hGg"/>
+                <outlet property="titleLB" destination="Wof-RI-168" id="A1d-LZ-w0s"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="deleteSelected" width="64" height="64"/>
+        <image name="poleSelected.png" width="64" height="64"/>
+    </resources>
+</document>
